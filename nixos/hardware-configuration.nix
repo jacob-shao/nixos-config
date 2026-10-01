@@ -8,7 +8,7 @@
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
+  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usbhid" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
@@ -19,22 +19,27 @@
       options = [ "subvol=root" ];
     };
 
-  fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/e43f48b7-c3ad-4dde-870c-5a774d024f61";
-      fsType = "btrfs";
-      options = [ "subvol=home" ];
-    };
-
   fileSystems."/nix" =
     { device = "/dev/disk/by-uuid/e43f48b7-c3ad-4dde-870c-5a774d024f61";
       fsType = "btrfs";
       options = [ "subvol=nix" ];
     };
 
+  fileSystems."/home" =
+    { device = "/dev/disk/by-uuid/e43f48b7-c3ad-4dde-870c-5a774d024f61";
+      fsType = "btrfs";
+      options = [ "subvol=home" ];
+    };
+
   fileSystems."/boot" =
     { device = "/dev/disk/by-uuid/BC49-FE00";
       fsType = "vfat";
       options = [ "fmask=0022" "dmask=0022" ];
+    };
+
+  fileSystems."/home/potato/wd_ssd_games" =
+    { device = "/dev/disk/by-uuid/66a648ae-4522-4d2f-b9bc-7a78bd67e46b";
+      fsType = "ext4";
     };
 
   swapDevices = [ ];

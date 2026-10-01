@@ -25,6 +25,8 @@
     "flakes"
   ];
 
+  services.flatpak.enable = true;
+
   nixpkgs.config.allowUnfree = true;
 
   networking.hostName = "nixos"; # Define your hostname.
@@ -64,6 +66,7 @@
   
   hardware = {
     graphics.enable = true;
+    graphics.enable32Bit = true;
     nvidia.open = true;
     nvidia.modesetting.enable = true;
   };
@@ -107,20 +110,23 @@
   };
 
   programs.firefox.enable = true;
-
+  programs.steam.enable = true;
+  programs.steam.extraCompatPackages = with pkgs; [
+      proton-ge-bin
+  ];
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
   environment.systemPackages = with pkgs; [
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
     kitty
-    steam
     waybar
     mako
     libnotify
     hyprpaper
     hyprlauncher
     git
+    osu-lazer-bin
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
