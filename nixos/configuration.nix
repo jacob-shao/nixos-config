@@ -127,6 +127,7 @@
     hyprlauncher
     git
     osu-lazer-bin
+    stow
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
