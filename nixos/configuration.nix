@@ -110,10 +110,13 @@
   };
 
   programs.firefox.enable = true;
-  programs.steam.enable = true;
-  programs.steam.extraCompatPackages = with pkgs; [
-      proton-ge-bin
-  ];
+  programs.steam = {
+      enable = true;
+      extest.enable = true; #steam controller mouse input fix
+      extraCompatPackages = with pkgs; [
+          proton-ge-bin
+      ];
+  };
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
   environment.systemPackages = with pkgs; [
