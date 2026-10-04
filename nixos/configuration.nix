@@ -28,7 +28,7 @@
   ];
 
   services.flatpak.enable = true;
-
+ 
   nixpkgs.config.allowUnfree = true;
 
   networking.hostName = "nixos"; # Define your hostname.
@@ -158,6 +158,7 @@
     git
     osu-lazer-bin
     stow
+    pear-desktop
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
