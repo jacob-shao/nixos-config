@@ -2,12 +2,14 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      # Import home-manager's NixOS module
+      inputs.home-manager.nixosModules.home-manager
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -78,27 +80,40 @@
   services.xserver.videoDrivers = [ "nvidia" ];
  
   # auto login into hyprland
-#  services.greetd = {
-#    enable = true;
-#    settings = {
-#      initial_session = {
-#        command = "sh -lc 'exec start-hyprland'";
-#        user = "potato";
-#      };
-#      default_session = {
-#        command = "sh -lc 'exec start-hyprland'";
-#        user = "potato";
-#      };
-#    };
-#  };  
-
   services.getty.autologinUser = "potato";
   environment.loginShellInit = ''
     if [ "$(tty)" = "/dev/tty1" ]; then
       start-hyprland
     fi
   '';
-   
+
+  #dankmaterialshell
+  programs.dms-shell = {
+    enable = true;
+
+    systemd = {
+      enable = true;             # Systemd service for auto-start
+      restartIfChanged = true;   # Auto-restart dms.service when dms-shell changes
+    };
+    
+    # Core features
+    enableSystemMonitoring = true;     # System monitoring widgets (dgop)
+    enableVPN = true;                  # VPN management widget
+    enableDynamicTheming = true;       # Wallpaper-based theming (matugen)
+    enableAudioWavelength = true;      # Audio visualizer (cava)
+    enableCalendarEvents = true;       # Calendar integration (khal)
+  };
+
+  # home manager
+  home-manager = {
+    extraSpecialArgs = { inherit inputs; };
+    users = {
+      # Import your home-manager configuration
+      potato = import ../home-manager/home.nix;
+    };
+  };
+
+
 # services.displayManager.sddm = {
 #   enable = true;
 #   wayland.enable = true;
