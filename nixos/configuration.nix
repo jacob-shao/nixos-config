@@ -76,7 +76,29 @@
   
 
   services.xserver.videoDrivers = [ "nvidia" ];
-  
+ 
+  # auto login into hyprland
+#  services.greetd = {
+#    enable = true;
+#    settings = {
+#      initial_session = {
+#        command = "sh -lc 'exec start-hyprland'";
+#        user = "potato";
+#      };
+#      default_session = {
+#        command = "sh -lc 'exec start-hyprland'";
+#        user = "potato";
+#      };
+#    };
+#  };  
+
+  services.getty.autologinUser = "potato";
+  environment.loginShellInit = ''
+    if [ "$(tty)" = "/dev/tty1" ]; then
+      start-hyprland
+    fi
+  '';
+   
 # services.displayManager.sddm = {
 #   enable = true;
 #   wayland.enable = true;
