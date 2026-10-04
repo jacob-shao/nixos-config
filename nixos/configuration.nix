@@ -59,6 +59,7 @@
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
+    withUWSM = true; #for dms autostart
   };
   
   environment.sessionVariables = {
@@ -83,7 +84,8 @@
   services.getty.autologinUser = "potato";
   environment.loginShellInit = ''
     if [ "$(tty)" = "/dev/tty1" ]; then
-      start-hyprland
+      #start-hyprland
+      uwsm start hyprland.desktop #for dms
     fi
   '';
 
@@ -94,14 +96,7 @@
     systemd = {
       enable = true;             # Systemd service for auto-start
       restartIfChanged = true;   # Auto-restart dms.service when dms-shell changes
-    };
-    
-    # Core features
-    enableSystemMonitoring = true;     # System monitoring widgets (dgop)
-    enableVPN = true;                  # VPN management widget
-    enableDynamicTheming = true;       # Wallpaper-based theming (matugen)
-    enableAudioWavelength = true;      # Audio visualizer (cava)
-    enableCalendarEvents = true;       # Calendar integration (khal)
+    };    
   };
 
   # home manager
@@ -160,7 +155,7 @@
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
     kitty
-    waybar
+   #  waybar
     mako
     libnotify
     hyprpaper
