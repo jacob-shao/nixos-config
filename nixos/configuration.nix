@@ -59,7 +59,6 @@
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
-    withUWSM = true; #for dms autostart
   };
   
   environment.sessionVariables = {
@@ -84,8 +83,7 @@
   services.getty.autologinUser = "potato";
   environment.loginShellInit = ''
     if [ "$(tty)" = "/dev/tty1" ]; then
-      #start-hyprland
-      uwsm start hyprland.desktop #for dms
+      start-hyprland
     fi
   '';
 
@@ -155,9 +153,6 @@
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
     kitty
-   #  waybar
-    mako
-    libnotify
     hyprpaper
     hyprlauncher
     git
