@@ -53,9 +53,15 @@
   # programs.neovim.enable = true;
   # home.packages = with pkgs; [ steam ];
   
-  programs.bash.enable = true;
-  home.shellAliases = {
+  programs.bash = {
+    enable = true;
+    initExtra = ''
+      PS1='\u@\h:\w\$ '
+    '';
+  };
+    home.shellAliases = {
       nrs = "sudo nixos-rebuild switch --flake /home/potato/nix-config#potato";
+      nixedit = "nano /home/potato/nix-config/nixos/configuration.nix";
   };
   
   # Enable home-manager and git
