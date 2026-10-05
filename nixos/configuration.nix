@@ -2,17 +2,23 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, inputs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  inputs,
+  ...
+}:
 
 {
   system.stateVersion = "26.05"; # dont change this
-  
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      # Import home-manager's NixOS module
-      inputs.home-manager.nixosModules.home-manager
-    ];
+
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    # Import home-manager's NixOS module
+    inputs.home-manager.nixosModules.home-manager
+  ];
 
   ###############
   #### SETUP ####
@@ -24,11 +30,14 @@
 
   #using btrfs
   fileSystems = {
-      "/".options = [ "compress=zstd" ];
-      "/home".options = [ "compress=zstd" ];
-      "/nix".options = [ "compress=zstd" "noatime" ];
+    "/".options = [ "compress=zstd" ];
+    "/home".options = [ "compress=zstd" ];
+    "/nix".options = [
+      "compress=zstd"
+      "noatime"
+    ];
   };
-  
+
   nix.settings.experimental-features = [
     "nix-command"
     "flakes"
@@ -98,7 +107,6 @@
   nixpkgs.config.allowUnfree = true;
   fonts.packages = with pkgs; [ nerd-fonts.jetbrains-mono ];
 
-
   # auto login into hyprland
   services.getty.autologinUser = "potato";
   environment.loginShellInit = ''
@@ -109,10 +117,10 @@
 
   # wayland stuff ?
   environment.sessionVariables = {
-    WLR_NO_HARDWARE_CURSORS = "1"; #fix cursors on nvidia
-    NIXOS_OZONE_WL = "1"; #for chromium/electron apps
+    WLR_NO_HARDWARE_CURSORS = "1"; # fix cursors on nvidia
+    NIXOS_OZONE_WL = "1"; # for chromium/electron apps
   };
-  
+
   # desktop environment
   xdg.portal.enable = true;
   xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
@@ -127,11 +135,11 @@
     enable = true;
 
     systemd = {
-      enable = true;             # Systemd service for auto-start
-      restartIfChanged = true;   # Auto-restart dms.service when dms-shell changes
-    };    
+      enable = true; # Systemd service for auto-start
+      restartIfChanged = true; # Auto-restart dms.service when dms-shell changes
+    };
   };
-  
+
   # Japanese IME
   i18n.inputMethod = {
     enable = true;
@@ -142,7 +150,7 @@
         fcitx5-mozc
         fcitx5-gtk
       ];
-      settings.addons.classicui.globalSection.PreferTextIcon = "True"; #switches tray icon to text
+      settings.addons.classicui.globalSection.PreferTextIcon = "True"; # switches tray icon to text
     };
   };
 
@@ -151,17 +159,17 @@
   ##################
   programs.firefox.enable = true;
   programs.steam = {
-      enable = true;
-      extest.enable = true; #steam controller mouse input fix
-      extraCompatPackages = with pkgs; [
-          proton-ge-bin
-      ];
+    enable = true;
+    extest.enable = true; # steam controller mouse input fix
+    extraCompatPackages = with pkgs; [
+      proton-ge-bin
+    ];
   };
 
   environment.systemPackages = with pkgs; [
-    kdePackages.breeze-icons #fixes fcitx5 missing icons on system tray
+    kdePackages.breeze-icons # fixes fcitx5 missing icons on system tray
     vscodium
-    vim 
+    vim
     wget
     kitty
     git
@@ -194,6 +202,4 @@
   # accidentally delete configuration.nix.
   # system.copySystemConfiguration = true;
 
-
 }
-
