@@ -173,6 +173,7 @@
     osu-lazer-bin
     stow
     pear-desktop
+    kdePackages.breeze-icons #fixes missing icons on system tray
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
