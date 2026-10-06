@@ -96,9 +96,14 @@
     pulse.enable = true;
   };
 
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = false;
+  };
   # Enable CUPS to print documents.
   # services.printing.enable = true;
 
+  boot.kernelParams = [ "usbcore.autosuspend=-1" ]; #fix keyboard (light) not working
   ##################
   #### SOFTWARE ####
   ##################
