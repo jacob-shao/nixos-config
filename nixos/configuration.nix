@@ -103,7 +103,7 @@
   # Enable CUPS to print documents.
   # services.printing.enable = true;
 
-  boot.kernelParams = [ "usbcore.autosuspend=-1" ]; #fix keyboard (light) not working
+  boot.kernelParams = [ "usbcore.autosuspend=-1" ]; #fix keyboard (light) not working (?)
   ##################
   #### SOFTWARE ####
   ##################
@@ -113,12 +113,24 @@
   fonts.packages = with pkgs; [ nerd-fonts.jetbrains-mono ];
 
   # auto login into hyprland
-  services.getty.autologinUser = "potato";
-  environment.loginShellInit = ''
-    if [ "$(tty)" = "/dev/tty1" ]; then
-      start-hyprland
-    fi
-  '';
+  # services.getty.autologinUser = "potato";
+  # environment.loginShellInit = ''
+  #   if [ "$(tty)" = "/dev/tty1" ]; then
+  #     start-hyprland
+  #   fi
+  # '';
+
+  services.displayManager.noctalia-greeter = {
+    enable = true;
+    settings = {
+      cursor.size = 24;
+      keyboard.layout = "us";
+    };
+    cursorTheme = {
+      package = pkgs.bibata-cursors;
+      name = "Bibata-Modern-Ice";
+    };
+  };
 
   # wayland stuff ?
   environment.sessionVariables = {
@@ -136,13 +148,19 @@
     xwayland.enable = true;
   };
 
-  programs.dms-shell = {
-    enable = true;
+  # programs.dms-shell = {
+  #   enable = true;
 
-    systemd = {
-      enable = true; # Systemd service for auto-start
-      restartIfChanged = true; # Auto-restart dms.service when dms-shell changes
-    };
+  #   systemd = {
+  #     enable = true; # Systemd service for auto-start
+  #     restartIfChanged = true; # Auto-restart dms.service when dms-shell changes
+  #   };
+  # };
+
+  programs.noctalia = {
+    enable = true;
+    recommendedServices.enable = true;
+    systemd.enable = true;
   };
 
   # Japanese IME
@@ -172,7 +190,7 @@
   };
 
   environment.systemPackages = with pkgs; [
-    kdePackages.breeze-icons # fixes fcitx5 missing icons on system tray
+    # kdePackages.breeze-icons # fixes fcitx5 missing icons on system tray
     vscodium
     vim
     wget
