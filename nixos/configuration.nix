@@ -103,7 +103,25 @@
   # Enable CUPS to print documents.
   # services.printing.enable = true;
 
-  boot.kernelParams = [ "usbcore.autosuspend=-1" ]; #fix keyboard (light) not working (?)
+  # Reset razer usb keyboard due to lighting/input not working until re plugged in
+  systemd.services."usb-reset" = {
+    enable = true;
+
+    description = "Resets usb port for my Razer Keyboard";
+    after = ["multi-user.target"];
+    serviceConfig = {
+        User = "root";
+        Type = "simple";
+        ExecStart=pkgs.writeShellScript "unit-restart-usb3_2" ''
+          echo '3-2' |tee /sys/bus/usb/drivers/usb/unbind
+          echo '3-2' |tee /sys/bus/usb/drivers/usb/bind
+        '';
+        KillMode = "process";
+        Restart = "on-failure";
+    };
+    wantedBy = [ "graphical.target" ];
+  };
+  
   ##################
   #### SOFTWARE ####
   ##################
